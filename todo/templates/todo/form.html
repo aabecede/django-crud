@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>Todo App</title>
+
+    <style>
+      body {
+        margin-top: 30px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Task Form</h1>
+
+      <div>
+        <a href="{% url 'todo:index' %}" class="btn btn-success">Kembali ke Daftar</a>
+      </div>
+
+      <br>
+
+      <div>
+        {% load widget_tweaks %}
+        <form method="POST">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+              <div class="alert alert-danger" role="alert">
+                {% for error in form.non_field_errors %}
+                  {{ error }}
+                {% endfor %}
+              </div>
+            {% endif %}
+
+            {% for field in form.visible_fields %}
+              <div class="form-group">
+                {{field.label_tag}}
+                {% if form.is_bound %}
+                  {% if field.errors %}
+                    {% render_field field class="form-control is-invalid" %}
+                    {% for error in field.errors %}
+                      <div class="invalid-feedback">
+                        {{error}}
+                      </div>
+                    {% endfor %}
+                  {% else %}
+                      {% render_field field class="form-control is-valid" %}
+                  {% endif %}
+                {% else %}
+                    {% render_field field clas="form-control" %}
+                {% endif %}
+
+                {% if field.help_ext %}
+                    <small class="form-text text-muted">
+                      {{field.help_text}}
+                    </small>
+                {% endif%}
+              </div>
+            {% endfor %}
+            {% comment %} <div class="form-group">
+              <label>Judul</label>
+              <input type="text" class="form-control" id="title" name="title">
+            </div>
+            <div class="form-group">
+                <label>Deskripsi</label>
+                <textarea class="form-control" id="description" name="description" rows="4"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Status</label>
+                <select class="form-control" id="status" name="status">
+                    <option value=""></option>
+                </select>
+              </div>
+              {% endcomment %}
+
+            <button type="submit" class="btn btn-primary">Simpan</button> 
+          </form>
+      </div>
+  </div>
+ 
+  </body>
+</html>

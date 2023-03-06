@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Aplikasi Todo
     'todo.apps.TodoConfig',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [

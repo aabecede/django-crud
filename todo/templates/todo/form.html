@@ -8,7 +8,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-    <title>Todo App</title>
+    <title>{% if form.instance.pk %}Update{% else %}Create{% endif %} a ToDo Item</title>
 
     <style>
       body {
@@ -18,8 +18,7 @@
   </head>
   <body>
     <div class="container">
-      <h1>Task Form</h1>
-
+      <h1>{% if form.instance.pk %}Update{% else %}Create{% endif %} a ToDo Item</h1>
       <div>
         <a href="{% url 'todo:index' %}" class="btn btn-success">Kembali ke Daftar</a>
       </div>
@@ -30,8 +29,8 @@
         {% load widget_tweaks %}
         <form method="POST">
             {% csrf_token %}
-
-            {% if form.non_field_errors %}
+            {{ form.as_p }}
+            {% comment %} {% if form.non_field_errors %}
               <div class="alert alert-danger" role="alert">
                 {% for error in form.non_field_errors %}
                   {{ error }}
@@ -63,7 +62,7 @@
                     </small>
                 {% endif%}
               </div>
-            {% endfor %}
+            {% endfor %} {% endcomment %}
             {% comment %} <div class="form-group">
               <label>Judul</label>
               <input type="text" class="form-control" id="title" name="title">

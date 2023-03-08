@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import Http404
 from django.contrib import messages
 from .models import Task
@@ -24,7 +24,7 @@ def show(request, task_id):
     return render(request, 'todo/detail.html', context)
 
 def createView(request):
-    print(request.method, "method")
+    # print(request.method, "method")
     if request.method == 'POST':
         form = TaskForm(request.POST)
         if form.is_valid():
@@ -37,3 +37,21 @@ def createView(request):
         form = TaskForm()
     # print(form)
     return render(request, 'todo/form.html', {'form':form})
+    
+def updateView(request, task_id):
+    task = get_object_or_404(Task, pk=task_id)
+    if request.method == 'POST':
+        form = TaskForm(request.POST, instance=task)
+        if form.is_valid():
+            form.save()
+            return redirect('todo:index')
+    else:
+        form = TaskForm(instance=task)
+    return render(request, 'todo/form.html', {'form': form})
+
+def delete(request, task_id):
+    task = get_object_or_404(Task, pk=task_id)
+    if request.method == 'POST':
+        task.delete()
+        return redirect('todo:index')
+    return render(request, 'todo/delete-confirm.html', {'task': task})
